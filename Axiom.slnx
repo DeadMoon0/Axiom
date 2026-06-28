@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Axiom.State.Tests/Axiom.State.Tests.csproj" Id="e2b3c464-f5fd-4b3c-b7db-b582345bcbb0" />
+  <Project Path="Axiom.State/Axiom.State.csproj" />
+  <Project Path="Axiom.Wpf.Sample/Axiom.Wpf.Sample.csproj" Id="edd9ccad-de75-4e9d-bf5b-f1807cc61dbe" />
+  <Project Path="Axiom.Wpf/Axiom.Wpf.csproj" Id="ad4d551a-2d6e-4ac5-92d6-900d0d51035c" />
+</Solution>

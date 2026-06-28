@@ -1,0 +1,80 @@
+﻿using Axiom.State.Actions;
+using System;
+using System.Collections.Generic;
+
+namespace Axiom.State.Reducers;
+
+public abstract class Reducer<TState> where TState : struct
+{
+    internal readonly List<ReducerActionHander<TState>> _handers = [];
+
+    protected void On
+        (Actions.StateAction action, 
+        Func<TState, TState> transformer) 
+        { On(action, (state, args) => transformer(state)); }
+    protected void On<T1>
+        (Actions.StateAction<T1> action, 
+        Func<TState, T1, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!)); }
+    protected void On<T1, T2>
+        (Actions.StateAction<T1, T2> action, 
+        Func<TState, T1, T2, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!)); }
+    protected void On<T1, T2, T3>
+        (Actions.StateAction<T1, T2, T3> action, 
+        Func<TState, T1, T2, T3, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!)); }
+    protected void On<T1, T2, T3, T4>
+        (Actions.StateAction<T1, T2, T3, T4> action, 
+        Func<TState, T1, T2, T3, T4, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!)); }
+    protected void On<T1, T2, T3, T4, T5>
+        (Actions.StateAction<T1, T2, T3, T4, T5> action, 
+        Func<TState, T1, T2, T3, T4, T5, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!, (T5)args[4]!)); }
+    protected void On<T1, T2, T3, T4, T5, T6>
+        (Actions.StateAction<T1, T2, T3, T4, T5, T6> action, 
+        Func<TState, T1, T2, T3, T4, T5, T6, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!, (T5)args[4]!, (T6)args[5]!)); }
+    protected void On<T1, T2, T3, T4, T5, T6, T7>
+        (Actions.StateAction<T1, T2, T3, T4, T5, T6, T7> action, 
+        Func<TState, T1, T2, T3, T4, T5, T6, T7, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!, (T5)args[4]!, (T6)args[5]!, (T7)args[6]!)); }
+    protected void On<T1, T2, T3, T4, T5, T6, T7, T8>
+        (Actions.StateAction<T1, T2, T3, T4, T5, T6, T7, T8> action, 
+        Func<TState, T1, T2, T3, T4, T5, T6, T7, T8, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!, (T5)args[4]!, (T6)args[5]!, (T7)args[6]!, (T8)args[7]!)); }
+    protected void On<T1, T2, T3, T4, T5, T6, T7, T8, T9>
+        (Actions.StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9> action, 
+        Func<TState, T1, T2, T3, T4, T5, T6, T7, T8, T9, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!, (T5)args[4]!, (T6)args[5]!, (T7)args[6]!, (T8)args[7]!, (T9)args[8]!)); }
+    protected void On<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
+        (Actions.StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> action, 
+        Func<TState, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!, (T5)args[4]!, (T6)args[5]!, (T7)args[6]!, (T8)args[7]!, (T9)args[8]!, (T10)args[9]!)); }
+    protected void On<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
+        (Actions.StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> action, 
+        Func<TState, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!, (T5)args[4]!, (T6)args[5]!, (T7)args[6]!, (T8)args[7]!, (T9)args[8]!, (T10)args[9]!, (T11)args[10]!)); }
+    protected void On<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>
+        (Actions.StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> action, 
+        Func<TState, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!, (T5)args[4]!, (T6)args[5]!, (T7)args[6]!, (T8)args[7]!, (T9)args[8]!, (T10)args[9]!, (T11)args[10]!, (T12)args[11]!)); }
+    protected void On<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>
+        (Actions.StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> action, 
+        Func<TState, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!, (T5)args[4]!, (T6)args[5]!, (T7)args[6]!, (T8)args[7]!, (T9)args[8]!, (T10)args[9]!, (T11)args[10]!, (T12)args[11]!, (T13)args[12]!)); }
+    protected void On<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
+        (Actions.StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> action, 
+        Func<TState, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!, (T5)args[4]!, (T6)args[5]!, (T7)args[6]!, (T8)args[7]!, (T9)args[8]!, (T10)args[9]!, (T11)args[10]!, (T12)args[11]!, (T13)args[12]!, (T14)args[13]!)); }
+    protected void On<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
+        (Actions.StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> action, 
+        Func<TState, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TState> transformer) 
+        { On(action, (state, args) => transformer(state, (T1)args[0]!, (T2)args[1]!, (T3)args[2]!, (T4)args[3]!, (T5)args[4]!, (T6)args[5]!, (T7)args[6]!, (T8)args[7]!, (T9)args[8]!, (T10)args[9]!, (T11)args[10]!, (T12)args[11]!, (T13)args[12]!, (T14)args[13]!, (T15)args[14]!)); }
+    
+    private void On(StateActionGeneric action, Func<TState, object?[], TState> transformer)
+    {
+        _handers.Add(new ReducerActionHander<TState>(action, transformer));
+    }
+}
