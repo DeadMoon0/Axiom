@@ -1,10 +1,32 @@
-﻿using Axiom.Wpf.Sample.State.Users;
+﻿using Axiom.State;
+using Axiom.Wpf.Sample.State;
+using Axiom.Wpf.Sample.State.Users;
 using Axiom.Wpf.Sample.State.Users.Messages;
+using System.Collections.Concurrent;
 
 namespace Axiom.Wpf.Sample;
 
 public static class MockAIP
 {
+    private readonly static BlockingCollection<(int, MessageState)> _messageQueue = [];
+
+    public static async Task ReceiveMessages()
+    {
+        foreach (var item in _messageQueue.GetConsumingEnumerable())
+        {
+            StateStore<MainState>.Default.Dispatch(MessageActions.AddMessageAction, item.Item1, item.Item2);
+        }
+    }
+
+    public static async Task SendMessage(int id, MessageState message)
+    {
+        StateStore<MainState>.Default.Dispatch(MessageActions.AddMessageAction, id, message);
+
+        await Task.Delay(3000);
+        StateStore<MainState>.Default.Dispatch(MessageActions.SetIsSendAction, id, message.Id, true);
+        _messageQueue.Add((id, message with { FromThisUser = false }));
+    }
+
     public static async Task<UserState[]> LoadUsers()
     {
         await Task.Delay(1000);

@@ -15,6 +15,6 @@ public class EffectResult<TState> where TState : struct
 
     internal void Dispatch(StateStore<TState> store)
     {
-        store.Dispatch(_action, _args);
+        store.DispatchInner(_action, _args);
     }
 }

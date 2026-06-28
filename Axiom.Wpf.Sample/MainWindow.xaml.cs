@@ -2,6 +2,7 @@
 using Axiom.Wpf.Extensions;
 using Axiom.Wpf.Sample.State;
 using Axiom.Wpf.Sample.State.Users;
+using Axiom.Wpf.Sample.State.Users.Messages;
 using Axiom.Wpf.Sample.UserControls.UserItem;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
@@ -28,14 +29,16 @@ namespace Axiom.Wpf.Sample
             StateStore<MainState>.Create()
                 .AddReducer(new MainReducer())
                 .AddReducer(new UserReducer())
+                .AddReducer(new MessageReducer())
                 .AddEffects(new UserEffects())
-                .UseSynchronizationContext(SynchronizationContext.Current)
+                .UseSynchronizationContext(SynchronizationContext.Current!)
                 .BuildAndMakeDefault();
 
             InitializeComponent();
 
             StateStore<MainState>.Default.Bind(x => x.AppTitle).Subscribe(title => this.Title = title);
             StateStore<MainState>.Default.Bind(x => x.Users).BindToCollection(spUsers.Children, (user) => user.Id, (user) => new UC_UserItem(user.Id));
+            StateStore<MainState>.Default.Bind(x => x.SelectedUser).Select(x => x == -1).ToggleVisibility(tbSAU, messageView);
 
             Task.Run(async () =>
             {
@@ -47,6 +50,8 @@ namespace Axiom.Wpf.Sample
             });
 
             StateStore<MainState>.Default.Dispatch(UserActions.LoadUserAction);
+
+            Task.Run(async () => await MockAIP.ReceiveMessages());
         }
     }
 }

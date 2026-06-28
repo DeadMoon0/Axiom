@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,24 +13,69 @@ public static class BindToCollectionExtension
 
     public static IDisposable BindToCollection<TItem, TTrack>(this IObservable<IEnumerable<TItem>> observable, UIElementCollection collection, Func<TItem, TTrack> trackBy, Func<TItem, UIElement> elementFactory) where TTrack : notnull
     {
-        //TODO: Maybe fix this naive approche
-        List<TrackEntry<TTrack>> tracking = [];
-        return observable.Subscribe((IEnumerable<TItem> values) =>
+        var current = new List<Entry<TTrack>>();
+        return observable.Subscribe(items =>
         {
-            TItem[] items = [.. values];
-            for (int i = 0; i < items.Length; i++)
+            var newItems = items?.ToList() ?? [];
+            var oldMap = new Dictionary<TTrack, Entry<TTrack>>();
+
+            for (int i = 0; i < current.Count; i++)
+                oldMap[current[i].Key] = current[i];
+
+            var next = new List<Entry<TTrack>>(newItems.Count);
+
+            for (int newIndex = 0; newIndex < newItems.Count; newIndex++)
             {
-                TTrack key = trackBy(items[i]);
-                if (tracking.Count > i && tracking[i].Key.Equals(key)) continue;
-                if (tracking.Count > i)
+                var item = newItems[newIndex];
+                var key = trackBy(item);
+
+                if (oldMap.TryGetValue(key, out var entry))
                 {
-                    collection.Remove(tracking[i].Element);
-                    tracking.RemoveAt(i);
+                    oldMap.Remove(key);
+
+                    var oldIndex = collection.IndexOf(entry.Element);
+                    if (oldIndex != newIndex)
+                    {
+                        collection.RemoveAt(oldIndex);
+                        InsertAt(collection, entry.Element, newIndex);
+                    }
+
+                    next.Add(entry);
                 }
-                var element = elementFactory(items[i]);
-                collection.Insert(i, element);
-                tracking.Insert(i, new TrackEntry<TTrack>(key, element));
+                else
+                {
+                    var element = elementFactory(item);
+                    InsertAt(collection, element, newIndex);
+                    next.Add(new Entry<TTrack>(key, element));
+                }
             }
+
+            foreach (var leftover in oldMap.Values)
+            {
+                collection.Remove(leftover.Element);
+            }
+
+            current = next;
         });
+    }
+
+    private sealed class Entry<TTrack> where TTrack : notnull
+    {
+        public Entry(TTrack key, UIElement element)
+        {
+            Key = key;
+            Element = element;
+        }
+
+        public TTrack Key { get; }
+        public UIElement Element { get; }
+    }
+
+    private static void InsertAt(UIElementCollection collection, UIElement element, int index)
+    {
+        if (index >= collection.Count)
+            collection.Add(element);
+        else
+            collection.Insert(index, element);
     }
 }

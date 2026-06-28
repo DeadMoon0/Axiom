@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Axiom.Wpf.Sample"
+        xmlns:messagesView="clr-namespace:Axiom.Wpf.Sample.UserControls.MessagesView"
         mc:Ignorable="d"
         Title="MainWindow" Background="#FF323232" Height="450" Width="800">
     <Grid>
@@ -16,5 +17,9 @@
                 
             </StackPanel>
         </ScrollViewer>
+        <Grid Grid.Column="1">
+            <TextBlock x:Name="tbSAU" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Gray">Select A User</TextBlock>
+            <messagesView:UC_MessagesView x:Name="messageView"/>
+        </Grid>
     </Grid>
 </Window>

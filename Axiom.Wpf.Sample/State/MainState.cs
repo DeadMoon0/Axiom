@@ -7,4 +7,5 @@ public record struct MainState()
     public string AppTitle = "Axiom Sample App";
     public bool IsUserLoading = false;
     public UserState[] Users = [];
+    public int SelectedUser = -1;
 }

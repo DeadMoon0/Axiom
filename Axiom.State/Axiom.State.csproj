@@ -15,9 +15,54 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Actions\StateAction.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StateAction.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="System.Linq.Async" Version="7.0.1" />
     <PackageReference Include="System.Reactive" Version="6.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Actions\StateAction.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StateAction.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Effects\EffectsGen.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EffectsGen.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Store\StateStoreGen.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StateStoreGen.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Actions\StateAction.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StateAction.cs</LastGenOutput>
+    </None>
+    <None Update="Effects\EffectsGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EffectsGen.cs</LastGenOutput>
+    </None>
+    <None Update="Store\StateStoreGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StateStoreGen.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

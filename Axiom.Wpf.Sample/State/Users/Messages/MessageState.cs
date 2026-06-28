@@ -5,4 +5,5 @@ public record struct MessageState()
     public int Id = 0;
     public string Message = "";
     public bool FromThisUser = false;
+    public bool IsSend = true;
 }

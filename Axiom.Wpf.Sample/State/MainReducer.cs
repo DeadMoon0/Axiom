@@ -13,5 +13,12 @@ public class MainReducer : Reducer<MainState>
                 AppTitle = title
             };
         });
+        On(MainActions.SetSelectedUser, (state, userId) =>
+        {
+            return state with
+            {
+                SelectedUser = userId
+            };
+        });
     }
 }

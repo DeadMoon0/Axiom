@@ -1,9 +1,11 @@
 ﻿using Axiom.State;
 using Axiom.Wpf.Extensions;
 using Axiom.Wpf.Sample.State;
+using Axiom.Wpf.Sample.State.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -28,17 +30,32 @@ namespace Axiom.Wpf.Sample.UserControls.UserItem
         public static readonly DependencyProperty UserNameProperty =
             DependencyProperty.Register("UserName", typeof(string), typeof(UC_UserItem), new PropertyMetadata(""));
 
-        public static readonly DependencyProperty UserSuffixProperty =
-            DependencyProperty.Register("UserSuffix", typeof(string), typeof(UC_UserItem), new PropertyMetadata(""));
+        //public static readonly DependencyProperty UserSuffixProperty =
+        //    DependencyProperty.Register("UserSuffix", typeof(string), typeof(UC_UserItem), new PropertyMetadata(""));
 
         public UC_UserItem(int userId)
         {
             UserId = userId;
 
-            StateStore<MainState>.Default.Bind(x => x.Users[userId - 1].UserName).BindToDependencyProperty(this, UserNameProperty);
-            StateStore<MainState>.Default.Bind(x => x.Users[userId - 1].UserSuffix).BindToDependencyProperty(this, UserSuffixProperty);
-
             InitializeComponent();
+
+            StateStore<MainState>.Default.Bind(UserSelectors.SelectUserWithId(userId)).Select(x => x.UserName).BindToDependencyProperty(this, UserNameProperty);
+            StateStore<MainState>.Default.Bind(UserSelectors.SelectUserWithId(userId)).Select(x => x.UserSuffix).BindToElement(lSuffix, Label.ContentProperty);
+
+            Task.Run(async () =>
+            {
+                await Task.Delay(new Random().Next(1000));
+                while (true)
+                {
+                    StateStore<MainState>.Default.Dispatch(UserActions.SetUserSuffixAction, UserId, ((List<string>)["XD", ":)", "=D", ":|"]).ElementAt(new Random().Next(4)));
+                    await Task.Delay(1000);
+                }
+            });
+        }
+
+        private void border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            StateStore<MainState>.Default.Dispatch(MainActions.SetSelectedUser, UserId);
         }
     }
 }

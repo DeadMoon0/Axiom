@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Axiom.Wpf.Sample.UserControls.UserItem"
              mc:Ignorable="d">
-    <Border CornerRadius="5" Background="#64000000" Margin="0 0 0 10">
+    <Border x:Name="border" CornerRadius="5" Background="#64000000" Margin="0 0 0 10" MouseDown="border_MouseDown">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Label Foreground="White" Content="{Binding UserName, ElementName=userControl}"/>
-            <Label Grid.Column="1" Foreground="Gray" Content="{Binding UserSuffix, ElementName=userControl}"/>
+            <Label x:Name="lSuffix" Grid.Column="1" Foreground="Gray"/>
         </Grid>
     </Border>
 </UserControl>
