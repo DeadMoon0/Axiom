@@ -1,0 +1,50 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+// Generated Output
+using Axiom.State.Selectors;
+using System;
+
+namespace Axiom.State.Reducers;
+
+public abstract partial class Reducer<TState> where TState : struct
+{
+<#
+const int MaxArity = 15;
+
+for (int i = 0; i <= MaxArity; i++)
+{
+#>
+    protected void On<#=GenericTypes(i, false)#>(Actions.StateAction<#=GenericTypes(i, false)#> action, Func<TState, <#=GenericTypesInline(i)#> TState> transformer) => OnInner(action, (state, args) => transformer(state<#= Argumens(i, true) #>));
+    protected void On<#=GenericTypes(i, true)#>(Actions.StateAction<#=GenericTypes(i, false)#> action, Func<<#=GenericTypesInline(i)#> Selector<TState, TSelected>> selector, Func<TSelected, <#=GenericTypesInline(i)#> TSelected> transformer) => OnInner(action, (args) => selector(<#= Argumens(i, false) #>), (state, args) => transformer(state<#= Argumens(i, true) #>));
+
+<#
+}
+#>
+}
+<#+
+
+string GenericTypes(int count, bool addTSelected)
+{
+    if(count == 0) return addTSelected ? "<TSelected>" : "";
+    return "<" + string.Join(", ",
+        Enumerable.Range(1, count).Select(i => $"T{i}")) + (addTSelected ? ", TSelected" : "") + ">";
+}
+
+string GenericTypesInline(int count)
+{
+    if(count == 0) return "";
+    return string.Join(", ",
+        Enumerable.Range(1, count).Select(i => $"T{i}")) + ",";
+}
+
+string Argumens(int count, bool includCommaPrefix)
+{
+    if (count == 0) return "";
+    return (includCommaPrefix ? ", " : "") + string.Join(", ",
+        Enumerable.Range(1, count).Select(i => $"(T{i})args[{i - 1}]!"));
+}
+#>

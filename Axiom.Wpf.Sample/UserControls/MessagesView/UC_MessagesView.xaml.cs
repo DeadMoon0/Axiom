@@ -6,6 +6,7 @@ using Axiom.Wpf.Sample.State.Users.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,15 +32,16 @@ namespace Axiom.Wpf.Sample.UserControls.MessagesView
         {
             InitializeComponent();
 
-            StateStore<MainState>.Default.Bind(x => UserSelectors.SelectUserWithId(x.SelectedUser)(x).Messages).BindToCollection(spMessages.Children, (msg) => msg.Id, (msg) => new UC_MessageItem(msg.Id));
+            StateStore<MainState>.Default.Bind(UserSelectors.SelectSelectedUser).Select(x => x.Messages).BindToCollection(spMessages.Children, (msg) => msg.Key, (msg) => new UC_MessageItem(msg.Key));
         }
 
         private void btSend_Click(object sender, RoutedEventArgs e)
         {
             string msg = tbMessage.Text;
+            nextID = nextID + 2;
             Task.Run(async () => await MockAIP.SendMessage(StateStore<MainState>.Default.GetValue(x => x.SelectedUser), new MessageState
             {
-                Id = nextID++,
+                Id = nextID,
                 FromThisUser = true,
                 IsSend = false,
                 Message = msg

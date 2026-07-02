@@ -39,8 +39,8 @@ namespace Axiom.Wpf.Sample.UserControls.UserItem
 
             InitializeComponent();
 
-            StateStore<MainState>.Default.Bind(UserSelectors.SelectUserWithId(userId)).Select(x => x.UserName).BindToDependencyProperty(this, UserNameProperty);
-            StateStore<MainState>.Default.Bind(UserSelectors.SelectUserWithId(userId)).Select(x => x.UserSuffix).BindToElement(lSuffix, Label.ContentProperty);
+            StateStore<MainState>.Default.Bind(UserSelectors.SelectUserViaId(userId)).Select(x => x.UserName).BindToDependencyProperty(this, UserNameProperty);
+            StateStore<MainState>.Default.Bind(UserSelectors.SelectUserViaId(userId)).Select(x => x.UserSuffix).BindToElement(lSuffix, Label.ContentProperty);
 
             Task.Run(async () =>
             {

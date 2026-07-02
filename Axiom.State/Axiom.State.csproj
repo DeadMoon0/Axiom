@@ -43,6 +43,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>EffectsGen.tt</DependentUpon>
     </Compile>
+    <Compile Update="Reducers\ReducerGen.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ReducerGen.tt</DependentUpon>
+    </Compile>
     <Compile Update="Store\StateStoreGen.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -58,6 +63,10 @@
     <None Update="Effects\EffectsGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EffectsGen.cs</LastGenOutput>
+    </None>
+    <None Update="Reducers\ReducerGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReducerGen.cs</LastGenOutput>
     </None>
     <None Update="Store\StateStoreGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

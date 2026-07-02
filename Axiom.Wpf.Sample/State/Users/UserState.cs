@@ -8,5 +8,5 @@ public record struct UserState()
     public string UserName = "NAME";
     public string UserSuffix = "SUFFIX";
 
-    public MessageState[] Messages = [];
+    public Dictionary<int, MessageState> Messages = [];
 }

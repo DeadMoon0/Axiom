@@ -2,12 +2,14 @@
 using Axiom.State.Effects;
 using Axiom.State.Exceptions;
 using Axiom.State.Reducers;
+using Axiom.State.Selectors;
 using Axiom.State.Store.Builder;
 using OneOf;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
@@ -48,6 +50,7 @@ public partial class StateStore<TState> where TState : struct
         TState newState;
         lock (_stateLock)
         {
+            Debug.WriteLine(this.GetType() + ": Dispatch Action" + action.Name);
             newState = _reducerHanders.TryGetValue(action, out var handler) ? handler.Reducer(_subject.Value, args) : throw new NoReducerFoundForActionException(action);
             if (newState.Equals(_subject.Value)) return;
             var paramAction = new ParameterizedAction { Action = action, Parameters = args };
@@ -60,9 +63,9 @@ public partial class StateStore<TState> where TState : struct
         lock (_stateLock) return AddSynchronizationContext(_subject).Select(x => selector(x));
     }
 
-    public IObservable<TOut> Bind<TIn, TOut>(Func<TState, TIn> selector, Func<TIn, TOut> transform)
+    public IObservable<T> Bind<T>(Selector<TState, T> selector)
     {
-        lock (_stateLock) return AddSynchronizationContext(_subject).Select(x => transform(selector(x)));
+        lock (_stateLock) return AddSynchronizationContext(_subject).Select(x => selector.GetSelected(x));
     }
 
     private IObservable<T> AddSynchronizationContext<T>(IObservable<T> observable)

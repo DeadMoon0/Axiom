@@ -6,18 +6,20 @@ public class MessageReducer : Reducer<MainState>
 {
     public MessageReducer()
     {
-        On(MessageActions.AddMessageAction, (state, userId, msg) =>
-        {
-            int index = Array.FindIndex(state.Users, (user) => user.Id == userId);
-            state.Users[index].Messages = [.. state.Users[index].Messages, msg];
-            return state;
-        });
-        On(MessageActions.SetIsSendAction, (state, userId, msgId, isSend) =>
-        {
-            int userIndex = Array.FindIndex(state.Users, (user) => user.Id == userId);
-            int messageIndex = Array.FindIndex(state.Users[userIndex].Messages, (msg) => msg.Id == msgId);
-            state.Users[userIndex].Messages[messageIndex] = state.Users[userIndex].Messages[messageIndex] with { IsSend = isSend };
-            return state;
-        });
+        On(MessageActions.AddMessageAction, 
+            (userId, msg) => UserSelectors.SelectUserViaId(userId),
+            (user, userId, msg) =>
+            {
+                user.Messages.Add(msg.Id, msg);
+                return user;
+            }
+        );
+        On(MessageActions.SetIsSendAction,
+            (userId, msgId, isSend) => UserSelectors.SelectUserViaId(userId).Then(MessageSelectors.SelectMessageViaId(msgId)),
+            (msg, userId, msgId, isSend) =>
+            {
+                return msg with { IsSend = isSend };
+            }
+        );
     }
 }
