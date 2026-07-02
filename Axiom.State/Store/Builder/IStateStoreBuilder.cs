@@ -6,5 +6,6 @@ public interface IStateStoreBuilder<TState> :
     IStateStoreAddReducerAction<TState>,
     IStateStoreBuildAction<TState>,
     IStateStoreAddEffectsAction<TState>,
-    IStateStoreUseSynchronizationContextAction<TState>
+    IStateStoreUseSynchronizationContextAction<TState>,
+    IStateStoreAddCopyStrategies<TState>
     where TState : struct;

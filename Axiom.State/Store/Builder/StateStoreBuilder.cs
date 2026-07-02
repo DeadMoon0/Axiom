@@ -1,5 +1,6 @@
 ﻿using Axiom.State.Effects;
 using Axiom.State.Reducers;
+using Axiom.State.StateCopyProviders;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -11,7 +12,14 @@ internal class StateStoreBuilder<TState> : IStateStoreBuilder<TState> where TSta
 {
     private readonly List<Reducer<TState>> _reducers = new List<Reducer<TState>>();
     private readonly List<Effects<TState>> _effects = new List<Effects<TState>>();
-    private SynchronizationContext? _synchronizationContext = null;
+    private SynchronizationContext? synchronizationContext = null;
+    private StateCloneStrategy[] strategies = [];
+
+    public IStateStoreBuilder<TState> AddCopyStrategies(params StateCloneStrategy[] strategies)
+    {
+        this.strategies = strategies;
+        return this;
+    }
 
     public IStateStoreBuilder<TState> AddEffects(Effects<TState> effects)
     {
@@ -37,12 +45,19 @@ internal class StateStoreBuilder<TState> : IStateStoreBuilder<TState> where TSta
 
     public IStateStoreBuilder<TState> UseSynchronizationContext(SynchronizationContext context)
     {
-        _synchronizationContext = context;
+        synchronizationContext = context;
         return this;
     }
 
     private StateStore<TState> Build(bool makeDefault)
     {
-        return new StateStore<TState>(_reducers.SelectMany(x => x._handers).ToImmutableDictionary((r) => r.Action), _effects.SelectMany(x => x._handers).GroupBy(x => x.Action).ToImmutableDictionary((e) => e.Key, (e) => e.ToArray()), _synchronizationContext, makeDefault);
+        return new StateStore<TState>(
+            _reducers.SelectMany(x => x._handers).ToImmutableDictionary((r) => r.Action), 
+            _effects.SelectMany(x => x._handers).GroupBy(x => x.Action).ToImmutableDictionary((e) => e.Key, 
+            (e) => e.ToArray()), 
+            synchronizationContext,
+            strategies,
+            makeDefault
+        );
     }
 }

@@ -3,6 +3,7 @@ using Axiom.State.Effects;
 using Axiom.State.Exceptions;
 using Axiom.State.Reducers;
 using Axiom.State.Selectors;
+using Axiom.State.StateCopyProviders;
 using Axiom.State.Store.Builder;
 using OneOf;
 using System;
@@ -30,15 +31,24 @@ public partial class StateStore<TState> where TState : struct
     private readonly ImmutableDictionary<StateActionGeneric, ReducerActionHander<TState>> _reducerHanders;
     private readonly ImmutableDictionary<StateActionGeneric, EffectActionHandler<TState>[]> _effectHanders;
     private readonly BlockingCollection<OneOf<ChangeQueueItem, ChangeQueueError>> _changeQueue = [];
+    private readonly StateCloneContext _cloneContext;
     private readonly SynchronizationContext? _synchronizationContext;
     private readonly BehaviorSubject<TState> _subject = new(new());
     private readonly object _stateLock = new object();
 
-    internal StateStore(ImmutableDictionary<StateActionGeneric, ReducerActionHander<TState>> reducerHanders, ImmutableDictionary<StateActionGeneric, EffectActionHandler<TState>[]> effectHanders, SynchronizationContext? synchronizationContext, bool makeDefault)
+    internal StateStore(
+        ImmutableDictionary<StateActionGeneric, ReducerActionHander<TState>> reducerHanders, 
+        ImmutableDictionary<StateActionGeneric, EffectActionHandler<TState>[]> effectHanders, 
+        SynchronizationContext? synchronizationContext, 
+        StateCloneStrategy[] customCloneStrategy, 
+        bool makeDefault
+    )
     {
         _reducerHanders = reducerHanders;
         _effectHanders = effectHanders;
         _synchronizationContext = synchronizationContext;
+        _cloneContext = new StateCloneContext();
+        _cloneContext.RegisterStrategies(customCloneStrategy);
 
         Task.Run(ProcessChangeQueue);
 
@@ -51,6 +61,7 @@ public partial class StateStore<TState> where TState : struct
         lock (_stateLock)
         {
             Debug.WriteLine(this.GetType() + ": Dispatch Action" + action.Name);
+            //var copiedValue = _cloneContext.DeepClone(_subject.Value); //TODO: Reuse when independent State becomes a real thing.
             newState = _reducerHanders.TryGetValue(action, out var handler) ? handler.Reducer(_subject.Value, args) : throw new NoReducerFoundForActionException(action);
             if (newState.Equals(_subject.Value)) return;
             var paramAction = new ParameterizedAction { Action = action, Parameters = args };
