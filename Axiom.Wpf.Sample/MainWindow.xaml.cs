@@ -51,7 +51,7 @@ namespace Axiom.Wpf.Sample
 
             StateStore<MainState>.Default.Dispatch(UserActions.LoadUserAction);
 
-            Task.Run(async () => await MockAIP.ReceiveMessages());
+            Task.Run(async () => await MockAPI.ReceiveMessages());
         }
     }
 }

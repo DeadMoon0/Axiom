@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 
 namespace Axiom.Wpf.Sample;
 
-public static class MockAIP
+public static class MockAPI
 {
     private readonly static BlockingCollection<(int, MessageState)> _messageQueue = [];
 

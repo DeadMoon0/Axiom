@@ -39,7 +39,7 @@ namespace Axiom.Wpf.Sample.UserControls.MessagesView
         {
             string msg = tbMessage.Text;
             nextID = nextID + 2;
-            Task.Run(async () => await MockAIP.SendMessage(StateStore<MainState>.Default.GetValue(x => x.SelectedUser), new MessageState
+            Task.Run(async () => await MockAPI.SendMessage(StateStore<MainState>.Default.GetValue(x => x.SelectedUser), new MessageState
             {
                 Id = nextID,
                 FromThisUser = true,
