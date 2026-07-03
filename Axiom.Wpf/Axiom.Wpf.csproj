@@ -1,22 +1,51 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <ImplicitUsings>disable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<!--<GenerateDocumentationFile>true</GenerateDocumentationFile>--><!--//TODO: Add this later-->
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Title>Axiom.Wpf</Title>
+		<Authors>DeadMoon0</Authors>
+		<Product>Axiom</Product>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>State,Management,Redux,Rx,Axiom,WPF,UI,View-Model,ViewModel</PackageTags>
+		<PackageIcon>Icon.png</PackageIcon>
+		<Description>Reactive state bindings for WPF. Bind Axiom state selectors directly to UI elements with fluent extension methods. Simplifies UI synchronization without boilerplate.</Description>
+		<Version>0.0.1</Version>
+		<PackageProjectUrl>https://github.com/DeadMoon0/Axiom</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/DeadMoon0/Axiom.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<Copyright>Copyright (c) DeadMoon0 2026</Copyright>
+		<PackageReleaseNotes>Init</PackageReleaseNotes>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Reactive" Version="6.1.0" />
-  </ItemGroup>
+	<ItemGroup>
+	  <None Include="..\Assets\Icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Reactive" Version="6.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 
 </Project>
