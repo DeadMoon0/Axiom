@@ -23,9 +23,7 @@ This works closely with `Axiom.State` but has no requirement.
 
 - **Zero ViewModel Boilerplate** — Bind state selectors directly to UI controls without implementing `INotifyPropertyChanged`
 - **Automatic UI Synchronization** — Leverages `SynchronizationContext` to ensure all binding updates occur on the UI thread
-- **Type-Safe Binding** — Full generic type support with compile-time safety
 - **Reactive Bindings** — Built on top of `System.Reactive` for predictable state subscriptions
-- **Four Essential Extensions** — Covers the most common WPF binding scenarios
 
 ---
 
