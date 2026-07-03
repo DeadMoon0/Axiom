@@ -10,14 +10,12 @@ This works closely with `Axiom.State` but has no requirement.
 
 - [Features](#features)
 - [Installation](#installation)
-- [Requirements](#requirements)
 - [Quick Start](#quick-start)
 - [Core Extensions](#core-extensions)
   - [BindToDependencyProperty](#bindtodependencyproperty)
   - [BindToCollection](#bindtocollection)
   - [ToggleVisibility](#togglevisibility)
 - [Real-World Example](#real-world-example)
-- [License](#license)
 
 ---
 

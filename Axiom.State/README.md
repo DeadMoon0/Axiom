@@ -18,7 +18,6 @@ Axiom.State provides a robust state store that manages application state and let
 ## Table of Contents
 
 - [Installation](#installation)
-- [Requirements](#requirements)
 - [Quick Start](#quick-start)
 - [Core Concepts](#core-concepts)
   - [State](#state)
