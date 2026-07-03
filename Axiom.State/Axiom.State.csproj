@@ -4,7 +4,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<!--<GenerateDocumentationFile>true</GenerateDocumentationFile>--><!--//TODO: Add this later-->
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Title>Axiom.State</Title>
 		<Authors>DeadMoon0</Authors>
@@ -82,6 +82,10 @@
 		<None Update="Effects\EffectsGen.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
 			<LastGenOutput>EffectsGen.cs</LastGenOutput>
+		</None>
+		<None Update="README.md">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
 		</None>
 		<None Update="Reducers\ReducerGen.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
