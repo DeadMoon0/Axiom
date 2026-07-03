@@ -1,4 +1,5 @@
 ![Icon](https://raw.githubusercontent.com/DeadMoon0/Axiom/refs/heads/main/Assets/Icon.svg)
+[![NuGet Version](https://img.shields.io/nuget/v/Axiom.Wpf?label=nuget%20Axiom.Wpf)](https://www.nuget.org/packages/Axiom.Wpf)
 
 # Axiom.Wpf
 
