@@ -34,9 +34,9 @@ namespace Axiom.Wpf.Sample.UserControls.MessagesView
 
             InitializeComponent();
 
-            StateStore<MainState>.Default.Bind(UserSelectors.SelectSelectedUser.Then(MessageSelectors.SelectMessageViaId(MessageId))).Select(x => x.Message).BindToElement(lText, Label.ContentProperty);
-            StateStore<MainState>.Default.Bind(UserSelectors.SelectSelectedUser.Then(MessageSelectors.SelectMessageViaId(MessageId))).Select(x => x.FromThisUser ? HorizontalAlignment.Right : HorizontalAlignment.Left).BindToElement(border, Border.HorizontalAlignmentProperty);
-            StateStore<MainState>.Default.Bind(UserSelectors.SelectSelectedUser.Then(MessageSelectors.SelectMessageViaId(MessageId))).Select(x => x.IsSend ? 1 : 0.5).BindToElement(border, Border.OpacityProperty);
+            StateStore<MainState>.Default.Bind(UserSelectors.SelectSelectedUser.Then(MessageSelectors.SelectMessageViaId(MessageId))).Select(x => x.Message).BindToDependencyProperty(lText, Label.ContentProperty);
+            StateStore<MainState>.Default.Bind(UserSelectors.SelectSelectedUser.Then(MessageSelectors.SelectMessageViaId(MessageId))).Select(x => x.FromThisUser ? HorizontalAlignment.Right : HorizontalAlignment.Left).BindToDependencyProperty(border, Border.HorizontalAlignmentProperty);
+            StateStore<MainState>.Default.Bind(UserSelectors.SelectSelectedUser.Then(MessageSelectors.SelectMessageViaId(MessageId))).Select(x => x.IsSend ? 1 : 0.5).BindToDependencyProperty(border, Border.OpacityProperty);
         }
     }
 }
