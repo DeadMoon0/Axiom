@@ -1,77 +1,96 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Title>Axiom.State</Title>
+		<Authors>DeadMoon0</Authors>
+		<Product>Axiom</Product>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>State,Management,Redux,Rx,Axiom</PackageTags>
+		<PackageIcon>Icon.png</PackageIcon>
+		<Description>A predictable, type-safe State Management System for C# built on the Observable Pattern. Manage application state with StateActions, Reducers, Effects, and Selectors for consistent and reactive state changes.</Description>
+		<Version>0.0.1</Version>
+		<PackageProjectUrl>https://github.com/DeadMoon0/Axiom</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/DeadMoon0/Axiom.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType> 
+		<Copyright>Copyright (c) DeadMoon0 2026</Copyright>
+		<PackageReleaseNotes>Init</PackageReleaseNotes>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="Actions\StateAction.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StateAction.tt</DependentUpon>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\Assets\Icon.png">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+		<None Include="Actions\StateAction.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>StateAction.tt</DependentUpon>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="OneOf" Version="3.0.271" />
-    <PackageReference Include="System.Linq.Async" Version="7.0.1" />
-    <PackageReference Include="System.Reactive" Version="6.1.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="OneOf" Version="3.0.271" />
+		<PackageReference Include="System.Linq.Async" Version="7.0.1" />
+		<PackageReference Include="System.Reactive" Version="6.1.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Actions\StateAction.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StateAction.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Effects\EffectsGen.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>EffectsGen.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Reducers\ReducerGen.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ReducerGen.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Store\StateStoreGen.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StateStoreGen.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Actions\StateAction.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>StateAction.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Effects\EffectsGen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>EffectsGen.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Reducers\ReducerGen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ReducerGen.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Store\StateStoreGen.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>StateStoreGen.tt</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Actions\StateAction.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StateAction.cs</LastGenOutput>
-    </None>
-    <None Update="Effects\EffectsGen.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EffectsGen.cs</LastGenOutput>
-    </None>
-    <None Update="Reducers\ReducerGen.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ReducerGen.cs</LastGenOutput>
-    </None>
-    <None Update="Store\StateStoreGen.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StateStoreGen.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Actions\StateAction.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>StateAction.cs</LastGenOutput>
+		</None>
+		<None Update="Effects\EffectsGen.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>EffectsGen.cs</LastGenOutput>
+		</None>
+		<None Update="Reducers\ReducerGen.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>ReducerGen.cs</LastGenOutput>
+		</None>
+		<None Update="Store\StateStoreGen.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>StateStoreGen.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 
 </Project>
