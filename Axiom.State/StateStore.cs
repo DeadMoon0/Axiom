@@ -103,18 +103,15 @@ public partial class StateStore<TState> where TState : struct
 
     private async Task ProcessChangeQueue()
     {
-        List<Task> effects = [];
         foreach (OneOf<ChangeQueueItem, ChangeQueueError> itemOrError in _changeQueue.GetConsumingEnumerable())
         {
             await itemOrError.Match(async (item) =>
             {
                 _subject.OnNext(item.NewState);
-                effects.Clear();
                 foreach (var hander in _effectHanders.TryGetValue(item.Action.Action, out var handers) ? handers : [])
                 {
-                    effects.Add(hander.Resolve(item.NewState, this));
+                    _ = hander.Resolve(item.NewState, this);
                 }
-                await Task.WhenAll(effects);
             },
             (error) =>
             {
