@@ -31,6 +31,7 @@ namespace Axiom.Wpf.Sample
                 .AddReducer(new UserReducer())
                 .AddReducer(new MessageReducer())
                 .AddEffects(new UserEffects())
+                .AddEffects(new MainEffects())
                 .UseSynchronizationContext(SynchronizationContext.Current!)
                 .BuildAndMakeDefault();
 
@@ -44,7 +45,7 @@ namespace Axiom.Wpf.Sample
             {
                 while (true)
                 {
-                    StateStore<MainState>.Default.Dispatch(MainActions.SetTitleAction, "Axiom Sample App [" + DateTime.Now.ToLongTimeString() + "]");
+                    //StateStore<MainState>.Default.Dispatch(MainActions.SetTitleAction, "Axiom Sample App [" + DateTime.Now.ToLongTimeString() + "]");
                     await Task.Delay(100);
                 }
             });
@@ -52,6 +53,13 @@ namespace Axiom.Wpf.Sample
             StateStore<MainState>.Default.Dispatch(UserActions.LoadUserAction);
 
             Task.Run(async () => await MockAPI.ReceiveMessages());
+
+            StateStore<MainState>.Default.Bind(x => x.Orchestrator1).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(o1, UIElement.VisibilityProperty);
+            StateStore<MainState>.Default.Bind(x => x.Orchestrator2).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(o2, UIElement.VisibilityProperty);
+            StateStore<MainState>.Default.Bind(x => x.Orchestrator3).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(o3, UIElement.VisibilityProperty);
+            StateStore<MainState>.Default.Bind(x => x.OrchestratorSuccess).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(oS, UIElement.VisibilityProperty);
+
+            StateStore<MainState>.Default.Dispatch(MainActions.OrchestratorStartAction);
         }
     }
 }

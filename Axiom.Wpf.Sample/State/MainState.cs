@@ -8,4 +8,9 @@ public record struct MainState()
     public bool IsUserLoading = false;
     public UserState[] Users = [];
     public int SelectedUser = -1;
+
+    public bool Orchestrator1 = false;
+    public bool Orchestrator2 = false;
+    public bool Orchestrator3 = false;
+    public bool OrchestratorSuccess = false;
 }

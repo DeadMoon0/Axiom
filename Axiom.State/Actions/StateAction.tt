@@ -15,8 +15,8 @@ for (int i = 0; i <= MaxArity; i++)
 #>
 public sealed record StateAction<#= GenericTypes(i) #> : StateActionGeneric
 {
-    public StateAction(string name) : base(name) { }
-    public StateAction(string area, string name) : base("[" + area + "] " + name) { }
+    public StateAction(string name, bool dontReduce = false) : base(name, dontReduce) { }
+    public StateAction(string area, string name,  bool dontReduce = false) : base("[" + area + "] " + name, dontReduce) { }
 }
 
 <#

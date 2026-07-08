@@ -47,7 +47,7 @@ namespace Axiom.Wpf.Sample.UserControls.UserItem
                 await Task.Delay(new Random().Next(1000));
                 while (true)
                 {
-                    StateStore<MainState>.Default.Dispatch(UserActions.SetUserSuffixAction, UserId, ((List<string>)["XD", ":)", "=D", ":|"]).ElementAt(new Random().Next(4)));
+                    //StateStore<MainState>.Default.Dispatch(UserActions.SetUserSuffixAction, UserId, ((List<string>)["XD", ":)", "=D", ":|"]).ElementAt(new Random().Next(4)));
                     await Task.Delay(1000);
                 }
             });

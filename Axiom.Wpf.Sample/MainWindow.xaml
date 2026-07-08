@@ -17,6 +17,12 @@
                 
             </StackPanel>
         </ScrollViewer>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="5">
+            <Border x:Name="o1" Height="10" Width="10" Background="Green" Margin="5"/>
+            <Border x:Name="o2" Height="10" Width="10" Background="Green" Margin="5"/>
+            <Border x:Name="o3" Height="10" Width="10" Background="Green" Margin="5"/>
+            <Border x:Name="oS" Height="10" Width="10" Background="Green" Margin="5"/>
+        </StackPanel>
         <Grid Grid.Column="1">
             <TextBlock x:Name="tbSAU" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Gray">Select A User</TextBlock>
             <messagesView:UC_MessagesView x:Name="messageView"/>

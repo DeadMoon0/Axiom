@@ -20,5 +20,33 @@ public class MainReducer : Reducer<MainState>
                 SelectedUser = userId
             };
         });
+        On(MainActions.Orchestrator1Action, (state) =>
+        {
+            return state with
+            {
+                Orchestrator1 = true
+            };
+        });
+        On(MainActions.Orchestrator2Action, (state) =>
+        {
+            return state with
+            {
+                Orchestrator2 = true
+            };
+        });
+        On(MainActions.Orchestrator3Action, (state) =>
+        {
+            return state with
+            {
+                Orchestrator3 = true
+            };
+        });
+        On(MainActions.OrchestratorFinalSuccessAction, (state) =>
+        {
+            return state with
+            {
+                OrchestratorSuccess = true
+            };
+        });
     }
 }

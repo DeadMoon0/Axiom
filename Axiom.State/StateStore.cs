@@ -31,6 +31,7 @@ public partial class StateStore<TState> where TState : struct
 
     private readonly ImmutableDictionary<StateActionGeneric, ReducerActionHander<TState>> _reducerHanders;
     private readonly ImmutableDictionary<StateActionGeneric, EffectActionHandler<TState>[]> _effectHanders;
+    private readonly Dictionary<StateActionGeneric, List<TaskCompletionSource>> _actionCallbacks = [];
     private readonly BlockingCollection<OneOf<ChangeQueueItem, ChangeQueueError>> _changeQueue = [];
     private readonly StateCloneContext _cloneContext;
     private readonly SynchronizationContext? _synchronizationContext;
@@ -62,9 +63,16 @@ public partial class StateStore<TState> where TState : struct
         lock (_stateLock)
         {
             Debug.WriteLine(this.GetType() + ": Dispatch Action" + action.Name);
-            var copiedValue = _cloneContext.DeepClone(_subject.Value);
-            newState = _reducerHanders.TryGetValue(action, out var handler) ? handler.Reducer(copiedValue, args) : throw new NoReducerFoundForActionException(action);
-            if (newState.Equals(_subject.Value)) return;
+            if (!action.DontReduce)
+            {
+                var copiedValue = _cloneContext.DeepClone(_subject.Value);
+                newState = _reducerHanders.TryGetValue(action, out var handler) ? handler.Reducer(copiedValue, args) : throw new NoReducerFoundForActionException(action);
+                if (newState.Equals(_subject.Value)) return;
+            }
+            else
+            {
+                newState = _subject.Value;
+            }
             var paramAction = new ParameterizedAction { Action = action, Parameters = args };
             _changeQueue.Add(new ChangeQueueItem(newState, paramAction));
         }
@@ -102,6 +110,26 @@ public partial class StateStore<TState> where TState : struct
 
     //}
 
+    internal TaskCompletionSource AddActionCallback(StateActionGeneric action, TaskCompletionSource tcs)
+    {
+        TaskCompletionSource proxyTcs = new TaskCompletionSource();
+        proxyTcs.Task.ContinueWith((t) =>
+        {
+            lock (_stateLock)
+            {
+                _actionCallbacks[action].Remove(proxyTcs);
+                if (_actionCallbacks[action].Count == 0) _actionCallbacks.Remove(action);
+            }
+            tcs.SetResult();
+        });
+        lock (_stateLock)
+        {
+            _actionCallbacks.TryAdd(action, []);
+            _actionCallbacks[action].Add(proxyTcs);
+        }
+        return proxyTcs;
+    }
+
     private async Task ProcessChangeQueue()
     {
         foreach (OneOf<ChangeQueueItem, ChangeQueueError> itemOrError in _changeQueue.GetConsumingEnumerable())
@@ -112,6 +140,10 @@ public partial class StateStore<TState> where TState : struct
                 foreach (var hander in _effectHanders.TryGetValue(item.Action.Action, out var handers) ? handers : [])
                 {
                     _ = hander.Resolve(item.NewState, this);
+                }
+                foreach (var tcs in _actionCallbacks.TryGetValue(item.Action.Action, out var tcss) ? tcss : [])
+                {
+                    tcs.SetResult();
                 }
             },
             (error) =>
