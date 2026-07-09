@@ -11,32 +11,32 @@ public class MainEffects : Effects<MainState>
 {
     public MainEffects()
     {
-        On(MainActions.OrchestratorStartAction, Orchestrator
+        On(MainActions.OrchestratorStartAction, Orchestrate
         (
             [
-                (s) => Invoke(MainActions.Orchestrator1Action, MainActions.Orchestrator1SuccessAction, MainActions.Orchestrator1FailureAction),
-                (s) => Invoke(MainActions.Orchestrator2Action, MainActions.Orchestrator2SuccessAction, MainActions.Orchestrator2FailureAction),
-                (s) => Invoke(MainActions.Orchestrator3Action, MainActions.Orchestrator3SuccessAction, MainActions.Orchestrator3FailureAction),
+                (s) => Step(MainActions.Orchestrator1Action, MainActions.Orchestrator1SuccessAction, MainActions.Orchestrator1FailureAction),
+                (s) => Step(MainActions.Orchestrator2Action, MainActions.Orchestrator2SuccessAction, MainActions.Orchestrator2FailureAction),
+                (s) => Step(MainActions.Orchestrator3Action, MainActions.Orchestrator3SuccessAction, MainActions.Orchestrator3FailureAction),
             ],
             (s) => Do(MainActions.OrchestratorFinalSuccessAction),
-            (s) => Do(MainActions.OrchestratorFinalFailureAction)
+            (s) => DoNothing()
         ));
         On(MainActions.Orchestrator1Action, Effect
         (
-            (s) => Task.Delay(5000).ContinueWith((t) => 0),
-            (i) => Do(MainActions.Orchestrator1SuccessAction),
+            (s) => Task.Delay(5000),
+            () => Do(MainActions.Orchestrator1SuccessAction),
             (e) => Do(MainActions.Orchestrator1FailureAction)
         ));
         On(MainActions.Orchestrator2Action, Effect
         (
-            (s) => Task.Delay(5000).ContinueWith((t) => 0),
-            (i) => Do(MainActions.Orchestrator2SuccessAction),
+            (s) => Task.Delay(5000),
+            () => Do(MainActions.Orchestrator2SuccessAction),
             (e) => Do(MainActions.Orchestrator2FailureAction)
         ));
         On(MainActions.Orchestrator3Action, Effect
         (
-            (s) => Task.Delay(5000).ContinueWith((t) => 0),
-            (i) => Do(MainActions.Orchestrator3SuccessAction),
+            (s) => Task.Delay(5000),
+            () => Do(MainActions.Orchestrator3SuccessAction),
             (e) => Do(MainActions.Orchestrator3FailureAction)
         ));
     }
