@@ -16,7 +16,7 @@ for (int i = 0; i <= MaxArity; i++)
 {
 #>
     protected EffectResult<TState> Do<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action<#= Argumens(i) #>) => new EffectResult<TState>(action<#= ArgumensArray(i) #>);
-    protected InvokeOrchestratorResult<TState> Step<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action<#= Argumens(i) #>, Actions.StateActionGeneric successfulAction, Actions.StateAction errorAction, bool isSuccessRequired = true) => new InvokeOrchestratorResult<TState>(action<#= ArgumensArray(i) #>, successfulAction, errorAction, isSuccessRequired);
+    protected InvokeOrchestratorResult<TState> Step<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action<#= Argumens(i) #>, Actions.StateActionGeneric successfulAction, Actions.StateActionGeneric errorAction, bool isSuccessRequired = true) => new InvokeOrchestratorResult<TState>(action<#= ArgumensArray(i) #>, successfulAction, errorAction, isSuccessRequired);
 
 <#
 }
