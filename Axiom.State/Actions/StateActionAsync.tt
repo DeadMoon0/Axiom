@@ -15,7 +15,7 @@ const int MaxArity = 15;
 for (int i = 0; i <= MaxArity; i++)
 {
 #>
-public sealed record StateActionAsync<#= GenericTypes(i, true) #> : StateActionAsyncGeneric
+public sealed record StateActionAsync<#= GenericTypes(i, true) #> : StateActionAsyncGeneric<TResult>
 {
     public static implicit operator StateAction<#= GenericTypes(i, false) #>(StateActionAsync<#= GenericTypes(i, true) #> a) => a.BeginAction;
 
@@ -24,6 +24,22 @@ public sealed record StateActionAsync<#= GenericTypes(i, true) #> : StateActionA
     public override StateAction<Exception> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
+    { 
+        string baseName = "[" + area + "] " + TrimSimpleName(simpleName);
+        BeginAction = new(baseName + "Action", dontReduceBegin);
+        SuccessAction = new(baseName + "SuccessAction", dontReduceSuccess);
+        ErrorAction = new(baseName + "ErrorAction", dontReduceError);
+    }
+}
+public sealed record StateActionAsyncNoResult<#= GenericTypes(i, false) #> : StateActionAsyncGeneric
+{
+    public static implicit operator StateAction<#= GenericTypes(i, false) #>(StateActionAsyncNoResult<#= GenericTypes(i, false) #> a) => a.BeginAction;
+
+    public override StateAction<#= GenericTypes(i, false) #> BeginAction { get; }
+    public override StateAction SuccessAction { get; }
+    public override StateAction<Exception> ErrorAction { get; }
+
+    public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
         string baseName = "[" + area + "] " + TrimSimpleName(simpleName);
         BeginAction = new(baseName + "Action", dontReduceBegin);
