@@ -22,11 +22,11 @@ public class UserReducer : Reducer<MainState>
             }
             return state;
         });
-        On(UserActions.LoadUserAction, (state) =>
+        On(UserActions.LoadUserAction.BeginAction, (state) =>
         {
             return state with { IsUserLoading = true };
         });
-        On(UserActions.LoadUserSuccessAction, (state, users) =>
+        On(UserActions.LoadUserAction.SuccessAction, (state, users) =>
         {
             return state with 
             { 

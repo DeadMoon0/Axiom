@@ -1,6 +1,7 @@
 ﻿using Axiom.State;
 using Axiom.Wpf.Extensions;
 using Axiom.Wpf.Sample.State;
+using Axiom.Wpf.Sample.State.Orchestrator;
 using Axiom.Wpf.Sample.State.Users;
 using Axiom.Wpf.Sample.State.Users.Messages;
 using Axiom.Wpf.Sample.UserControls.UserItem;
@@ -30,8 +31,10 @@ namespace Axiom.Wpf.Sample
                 .AddReducer(new MainReducer())
                 .AddReducer(new UserReducer())
                 .AddReducer(new MessageReducer())
+                .AddReducer(new OrchestratorReducers())
                 .AddEffects(new UserEffects())
                 .AddEffects(new MainEffects())
+                .AddEffects(new OrchestratorEffects())
                 .UseSynchronizationContext(SynchronizationContext.Current!)
                 .BuildAndMakeDefault();
 
@@ -54,12 +57,12 @@ namespace Axiom.Wpf.Sample
 
             Task.Run(async () => await MockAPI.ReceiveMessages());
 
-            StateStore<MainState>.Default.Bind(x => x.Orchestrator1).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(o1, UIElement.VisibilityProperty);
-            StateStore<MainState>.Default.Bind(x => x.Orchestrator2).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(o2, UIElement.VisibilityProperty);
-            StateStore<MainState>.Default.Bind(x => x.Orchestrator3).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(o3, UIElement.VisibilityProperty);
-            StateStore<MainState>.Default.Bind(x => x.OrchestratorSuccess).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(oS, UIElement.VisibilityProperty);
+            StateStore<MainState>.Default.Bind(OrchestratorSelectors.SelectOrchestrator).Select(x => x.Orchestrator1).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(o1, UIElement.VisibilityProperty);
+            StateStore<MainState>.Default.Bind(OrchestratorSelectors.SelectOrchestrator).Select(x => x.Orchestrator2).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(o2, UIElement.VisibilityProperty);
+            StateStore<MainState>.Default.Bind(OrchestratorSelectors.SelectOrchestrator).Select(x => x.Orchestrator3).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(o3, UIElement.VisibilityProperty);
+            StateStore<MainState>.Default.Bind(OrchestratorSelectors.SelectOrchestrator).Select(x => x.OrchestratorSuccess).Select(x => x ? Visibility.Visible : Visibility.Collapsed).BindToDependencyProperty(oS, UIElement.VisibilityProperty);
 
-            StateStore<MainState>.Default.Dispatch(MainActions.OrchestratorStartAction);
+            StateStore<MainState>.Default.Dispatch(OrchestratorActions.OrchestratorStartAction);
         }
     }
 }

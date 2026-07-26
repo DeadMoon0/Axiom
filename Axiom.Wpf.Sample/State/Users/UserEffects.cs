@@ -6,10 +6,6 @@ public class UserEffects : Effects<MainState>
 {
     public UserEffects()
     {
-        On(UserActions.LoadUserAction, Effect(
-            (state) => MockAPI.LoadUsers(),
-            (users) => Do(UserActions.LoadUserSuccessAction, users),
-            (error) => Do(UserActions.LoadUserFailedAction, error)
-        ));
+        OnAsync(UserActions.LoadUserAction, (s) => MockAPI.LoadUsers());
     }
 }

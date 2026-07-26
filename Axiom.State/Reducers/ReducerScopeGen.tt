@@ -10,7 +10,7 @@ using System;
 
 namespace Axiom.State.Reducers;
 
-public abstract partial class Reducer<TState> where TState : struct
+public partial class ReducerScope<TState, TBase> where TState : struct where TBase : struct
 {
 <#
 const int MaxArity = 15;
@@ -18,8 +18,8 @@ const int MaxArity = 15;
 for (int i = 0; i <= MaxArity; i++)
 {
 #>
-    protected void On<#=GenericTypes(i, false)#>(Actions.StateAction<#=GenericTypes(i, false)#> action, Func<TState, <#=GenericTypesInline(i)#> TState> transformer) => OnInner(action, (state, args) => transformer(state<#= Argumens(i, true) #>));
-    protected void On<#=GenericTypes(i, true)#>(Actions.StateAction<#=GenericTypes(i, false)#> action, Func<<#=GenericTypesInline(i)#> Selector<TState, TSelected>> selector, Func<TSelected, <#=GenericTypesInline(i)#> TSelected> transformer) => OnInner(action, (args) => selector(<#= Argumens(i, false) #>), (state, args) => transformer(state<#= Argumens(i, true) #>));
+    public ReducerScope<TState, TBase> On<#=GenericTypes(i, false)#>(Actions.StateAction<#=GenericTypes(i, false)#> action, Func<TState, <#=GenericTypesInline(i)#> TState> transformer) => OnInner(action, (state, args) => transformer(state<#= Argumens(i, true) #>));
+    public ReducerScope<TState, TBase> On<#=GenericTypes(i, true)#>(Actions.StateAction<#=GenericTypes(i, false)#> action, Func<<#=GenericTypesInline(i)#> Selector<TState, TSelected>> selector, Func<TSelected, <#=GenericTypesInline(i)#> TSelected> transformer) => OnInner(action, (args) => selector(<#= Argumens(i, false) #>), (state, args) => transformer(state<#= Argumens(i, true) #>));
 
 <#
 }

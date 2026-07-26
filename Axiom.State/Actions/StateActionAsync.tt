@@ -1,0 +1,47 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+// Generated Output
+using System;
+
+namespace Axiom.State.Actions;
+
+<#
+const int MaxArity = 15;
+
+for (int i = 0; i <= MaxArity; i++)
+{
+#>
+public sealed record StateActionAsync<#= GenericTypes(i, true) #> : StateActionAsyncGeneric
+{
+    public static implicit operator StateAction<#= GenericTypes(i, false) #>(StateActionAsync<#= GenericTypes(i, true) #> a) => a.BeginAction;
+
+    public override StateAction<#= GenericTypes(i, false) #> BeginAction { get; }
+    public override StateAction<TResult> SuccessAction { get; }
+    public override StateAction<Exception> ErrorAction { get; }
+
+    public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
+    { 
+        string baseName = "[" + area + "] " + TrimSimpleName(simpleName);
+        BeginAction = new(baseName + "Action", dontReduceBegin);
+        SuccessAction = new(baseName + "SuccessAction", dontReduceSuccess);
+        ErrorAction = new(baseName + "ErrorAction", dontReduceError);
+    }
+}
+
+<#
+}
+#>
+<#+
+
+string GenericTypes(int count, bool printPrefixTs)
+{
+    if(count == 0) return printPrefixTs ? "<TResult>" : "";
+    return "<" + (printPrefixTs ? "TResult, " : "") + string.Join(", ",
+        Enumerable.Range(1, count).Select(i => $"T{i}")) + ">";
+}
+
+#>

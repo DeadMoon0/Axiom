@@ -53,6 +53,11 @@ public class Selector<TState, TSelected>
 
 public static class Selector
 {
+    public static Selector<TState, TState> Self<TState>()
+    {
+        return new Selector<TState, TState>((s) => s, (s, v) => v);
+    }
+
     public static Selector<TState, TSelected> Property<TState, TSelected>(Expression<Func<TState, TSelected>> exprGetter)
     {
         return new Selector<TState, TSelected>((state) => exprGetter.Compile()(state), CompSetterFromPropertyGetter(exprGetter));
