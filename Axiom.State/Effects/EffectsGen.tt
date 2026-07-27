@@ -17,6 +17,8 @@ for (int i = 0; i <= MaxArity; i++)
 #>
     protected EffectResult<TState> Do<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action<#= Argumens(i) #>) => new EffectResult<TState>(action<#= ArgumensArray(i) #>);
     protected InvokeOrchestratorResult<TState> Step<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action<#= Argumens(i) #>, Actions.StateActionGeneric successfulAction, Actions.StateActionGeneric errorAction, bool isSuccessRequired = true) => new InvokeOrchestratorResult<TState>(action<#= ArgumensArray(i) #>, successfulAction, errorAction, isSuccessRequired);
+    protected InvokeOrchestratorResult<TState> StepAsync<#= GenericTypesResult(i) #>(Actions.StateActionAsync<#= GenericTypesResult(i) #> action<#= Argumens(i) #>, bool isSuccessRequired = true) => Step(action.BeginAction<#= ArgumensNoType(i) #>, action.SuccessAction, action.ErrorAction);
+    protected InvokeOrchestratorResult<TState> StepAsync<#= GenericTypes(i) #>(Actions.StateActionAsyncNoResult<#= GenericTypes(i) #> action<#= Argumens(i) #>, bool isSuccessRequired = true) => Step(action.BeginAction<#= ArgumensNoType(i) #>, action.SuccessAction, action.ErrorAction);
 
 <#
 }
@@ -31,11 +33,25 @@ string GenericTypes(int count)
         Enumerable.Range(1, count).Select(i => $"T{i}")) + ">";
 }
 
+string GenericTypesResult(int count)
+{
+    if(count == 0) return "<TResult>";
+    return "<TResult, " + string.Join(", ",
+        Enumerable.Range(1, count).Select(i => $"T{i}")) + ">";
+}
+
 string Argumens(int count)
 {
     if (count == 0) return "";
     return ", " + string.Join(", ",
         Enumerable.Range(1, count).Select(i => $"T{i} arg{i}"));
+}
+
+string ArgumensNoType(int count)
+{
+    if (count == 0) return "";
+    return ", " + string.Join(", ",
+        Enumerable.Range(1, count).Select(i => $"arg{i}"));
 }
 
 string ArgumensArray(int count)
