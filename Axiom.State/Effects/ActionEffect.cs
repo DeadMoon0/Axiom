@@ -6,15 +6,11 @@ namespace Axiom.State.Effects;
 
 public class ActionEffect<TState> : Effect<TState> where TState : struct
 {
-    private readonly Func<TState, Task<object>> _action;
-    private readonly Func<object, EffectResult<TState>> _onSuccess;
-    private readonly Func<Exception, EffectResult<TState>> _onError;
+    private readonly Func<TState, object?[], Task<EffectResult<TState>>> _action;
 
-    internal ActionEffect(Func<TState, Task<object>> action, Func<object, EffectResult<TState>> onSuccess, Func<Exception, EffectResult<TState>> onError)    
+    internal ActionEffect(Func<TState, object?[], Task<EffectResult<TState>>> action)    
     {
         _action = action;
-        _onSuccess = onSuccess;
-        _onError = onError;
     }
 
     internal override EffectActionHandler<TState> GetHandler(StateActionGeneric action)
@@ -22,16 +18,8 @@ public class ActionEffect<TState> : Effect<TState> where TState : struct
         return new EffectActionHandler<TState>(action, this);
     }
 
-    internal async override Task ResolveEffect(TState state, StateStore<TState> store)
+    internal async override Task ResolveEffect(TState state, object?[] args, StateStore<TState> store)
     {
-        try
-        {
-            object result = await _action(state);
-            _onSuccess(result).Dispatch(store);
-        }
-        catch (Exception e)
-        {
-            _onError(e).Dispatch(store);
-        }
+        (await _action(state, args)).Dispatch(store);
     }
 }

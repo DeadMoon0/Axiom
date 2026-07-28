@@ -139,7 +139,7 @@ public partial class StateStore<TState> where TState : struct
                 _subject.OnNext(item.NewState);
                 foreach (var hander in _effectHanders.TryGetValue(item.Action.Action, out var handers) ? handers : [])
                 {
-                    _ = hander.Resolve(item.NewState, this);
+                    _ = hander.Resolve(item.NewState, item.Action.Parameters, this);
                 }
                 foreach (var tcs in _actionCallbacks.TryGetValue(item.Action.Action, out var tcss) ? tcss : [])
                 {

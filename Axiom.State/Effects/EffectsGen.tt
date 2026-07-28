@@ -5,6 +5,11 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
 // Generated Output
+using System;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
+
 namespace Axiom.State.Effects;
 
 public abstract partial class Effects<TState> where TState : struct
@@ -19,6 +24,10 @@ for (int i = 0; i <= MaxArity; i++)
     protected InvokeOrchestratorResult<TState> Step<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action<#= Argumens(i) #>, Actions.StateActionGeneric successfulAction, Actions.StateActionGeneric errorAction, bool isSuccessRequired = true) => new InvokeOrchestratorResult<TState>(action<#= ArgumensArray(i) #>, successfulAction, errorAction, isSuccessRequired);
     protected InvokeOrchestratorResult<TState> StepAsync<#= GenericTypesResult(i) #>(Actions.StateActionAsync<#= GenericTypesResult(i) #> action<#= Argumens(i) #>, bool isSuccessRequired = true) => Step(action.BeginAction<#= ArgumensNoType(i) #>, action.SuccessAction, action.ErrorAction);
     protected InvokeOrchestratorResult<TState> StepAsync<#= GenericTypes(i) #>(Actions.StateActionAsyncNoResult<#= GenericTypes(i) #> action<#= Argumens(i) #>, bool isSuccessRequired = true) => Step(action.BeginAction<#= ArgumensNoType(i) #>, action.SuccessAction, action.ErrorAction);
+    protected void On<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action, Func<TState<#= GenericTypesNoBracets(i) #>, Task<EffectResult<TState>>> effect) => _handers.Add(new ActionEffect<TState>((s, args) => effect(s<#= ArgumensFromArray(i) #>)).GetHandler(action));
+    protected void OnAsync<#= GenericTypesResult(i) #>(Actions.StateActionAsync<#= GenericTypesResult(i) #> stateAction, Func<TState <#= GenericTypesNoBracets(i) #>, Task<TResult>> action) => On(stateAction.BeginAction, (state<#= ArgumensNoType(i) #>) => DoAction(() => action(state<#= ArgumensNoType(i) #>), x => Do(stateAction.SuccessAction, x), e => Do(stateAction.ErrorAction, e)));
+    protected void OnAsync<#= GenericTypes(i) #>(Actions.StateActionAsyncNoResult<#= GenericTypes(i) #> stateAction, Func<TState <#= GenericTypesNoBracets(i) #>, Task> action) => On(stateAction.BeginAction, (state<#= ArgumensNoType(i) #>) => DoAction(() => action(state<#= ArgumensNoType(i) #>), () => Do(stateAction.SuccessAction), e => Do(stateAction.ErrorAction, e)));
+    protected void OnOrchestrate<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action, Func<TState<#= GenericTypesNoBracets(i) #>, Task<EffectResult<TState>>> effect) => _handers.Add(new ActionEffect<TState>((s, args) => effect(s<#= ArgumensFromArray(i) #>)).GetHandler(action));
 
 <#
 }
@@ -33,6 +42,13 @@ string GenericTypes(int count)
         Enumerable.Range(1, count).Select(i => $"T{i}")) + ">";
 }
 
+string GenericTypesNoBracets(int count)
+{
+    if(count == 0) return "";
+    return ", " + string.Join(", ",
+        Enumerable.Range(1, count).Select(i => $"T{i}"));
+}
+
 string GenericTypesResult(int count)
 {
     if(count == 0) return "<TResult>";
@@ -45,6 +61,13 @@ string Argumens(int count)
     if (count == 0) return "";
     return ", " + string.Join(", ",
         Enumerable.Range(1, count).Select(i => $"T{i} arg{i}"));
+}
+
+string ArgumensFromArray(int count)
+{
+    if (count == 0) return "";
+    return ", " + string.Join(", ",
+        Enumerable.Range(1, count).Select(i => $"(T{i})args[{i}]!"));
 }
 
 string ArgumensNoType(int count)

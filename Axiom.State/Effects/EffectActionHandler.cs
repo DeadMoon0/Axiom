@@ -5,8 +5,8 @@ namespace Axiom.State.Effects;
 
 internal record EffectActionHandler<TState>(StateActionGeneric Action, Effect<TState> Effect)  where TState : struct 
 {
-    internal Task Resolve(TState state, StateStore<TState> store)
+    internal Task Resolve(TState state, object?[] args, StateStore<TState> store)
     {
-        return Effect.ResolveEffect(state, store);
+        return Effect.ResolveEffect(state, args, store);
     }
 }
