@@ -20,14 +20,12 @@ const int MaxArity = 15;
 for (int i = 0; i <= MaxArity; i++)
 {
 #>
-    protected EffectResult<TState> Do<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action<#= Argumens(i) #>) => new EffectResult<TState>(action<#= ArgumensArray(i) #>);
-    protected InvokeOrchestratorResult<TState> Step<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action<#= Argumens(i) #>, Actions.StateActionGeneric successfulAction, Actions.StateActionGeneric errorAction, bool isSuccessRequired = true) => new InvokeOrchestratorResult<TState>(action<#= ArgumensArray(i) #>, successfulAction, errorAction, isSuccessRequired);
-    protected InvokeOrchestratorResult<TState> StepAsync<#= GenericTypesResult(i) #>(Actions.StateActionAsync<#= GenericTypesResult(i) #> action<#= Argumens(i) #>, bool isSuccessRequired = true) => Step(action.BeginAction<#= ArgumensNoType(i) #>, action.SuccessAction, action.ErrorAction);
-    protected InvokeOrchestratorResult<TState> StepAsync<#= GenericTypes(i) #>(Actions.StateActionAsyncNoResult<#= GenericTypes(i) #> action<#= Argumens(i) #>, bool isSuccessRequired = true) => Step(action.BeginAction<#= ArgumensNoType(i) #>, action.SuccessAction, action.ErrorAction);
-    protected void On<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action, Func<TState<#= GenericTypesNoBracets(i) #>, Task<EffectResult<TState>>> effect) => _handers.Add(new ActionEffect<TState>((s, args) => effect(s<#= ArgumensFromArray(i) #>)).GetHandler(action));
+    protected EffectResult<TState> Do<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action<#= Argumens(i) #>) => new EffectSingleResult<TState>(action<#= ArgumensArray(i) #>);
+    protected void On<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action, Func<TState<#= GenericTypesNoBracets(i) #>, EffectResult<TState>> effect) => _handers.Add(new ActionEffect<TState>((s, args) => effect(s<#= ArgumensFromArray(i) #>)).GetHandler(action));
     protected void OnAsync<#= GenericTypesResult(i) #>(Actions.StateActionAsync<#= GenericTypesResult(i) #> stateAction, Func<TState <#= GenericTypesNoBracets(i) #>, Task<TResult>> action) => On(stateAction.BeginAction, (state<#= ArgumensNoType(i) #>) => DoAction(() => action(state<#= ArgumensNoType(i) #>), x => Do(stateAction.SuccessAction, x), e => Do(stateAction.ErrorAction, e)));
     protected void OnAsync<#= GenericTypes(i) #>(Actions.StateActionAsyncNoResult<#= GenericTypes(i) #> stateAction, Func<TState <#= GenericTypesNoBracets(i) #>, Task> action) => On(stateAction.BeginAction, (state<#= ArgumensNoType(i) #>) => DoAction(() => action(state<#= ArgumensNoType(i) #>), () => Do(stateAction.SuccessAction), e => Do(stateAction.ErrorAction, e)));
-    protected void OnOrchestrate<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action, Func<TState<#= GenericTypesNoBracets(i) #>, Task<EffectResult<TState>>> effect) => _handers.Add(new ActionEffect<TState>((s, args) => effect(s<#= ArgumensFromArray(i) #>)).GetHandler(action));
+    protected EffectResult<TState> Await<#= GenericTypesResult(i) #>(Actions.StateActionAsync<#= GenericTypesResult(i) #> stateAction<#= Argumens(i) #>, bool isSuccessRequired = true) => new EffectAwaitableResult<TState>(Do(stateAction.BeginAction<#= ArgumensNoType(i) #>), stateAction.SuccessAction, stateAction.ErrorAction, isSuccessRequired);
+    protected EffectResult<TState> Await<#= GenericTypes(i) #>(Actions.StateActionAsyncNoResult<#= GenericTypes(i) #> stateAction<#= Argumens(i) #>, bool isSuccessRequired = true) => new EffectAwaitableResult<TState>(Do(stateAction.BeginAction<#= ArgumensNoType(i) #>), stateAction.SuccessAction, stateAction.ErrorAction, isSuccessRequired);
 
 <#
 }

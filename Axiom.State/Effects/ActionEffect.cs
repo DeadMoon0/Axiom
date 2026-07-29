@@ -6,9 +6,9 @@ namespace Axiom.State.Effects;
 
 public class ActionEffect<TState> : Effect<TState> where TState : struct
 {
-    private readonly Func<TState, object?[], Task<EffectResult<TState>>> _action;
+    private readonly Func<TState, object?[], EffectResult<TState>> _action;
 
-    internal ActionEffect(Func<TState, object?[], Task<EffectResult<TState>>> action)    
+    internal ActionEffect(Func<TState, object?[], EffectResult<TState>> action)    
     {
         _action = action;
     }
@@ -20,6 +20,6 @@ public class ActionEffect<TState> : Effect<TState> where TState : struct
 
     internal async override Task ResolveEffect(TState state, object?[] args, StateStore<TState> store)
     {
-        (await _action(state, args)).Dispatch(store);
+        await _action(state, args).DispatchAsync(store);
     }
 }
