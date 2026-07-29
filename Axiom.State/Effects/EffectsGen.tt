@@ -65,7 +65,7 @@ string ArgumensFromArray(int count)
 {
     if (count == 0) return "";
     return ", " + string.Join(", ",
-        Enumerable.Range(1, count).Select(i => $"(T{i})args[{i}]!"));
+        Enumerable.Range(1, count).Select(i => $"(T{i})args[{i - 1}]!"));
 }
 
 string ArgumensNoType(int count)
