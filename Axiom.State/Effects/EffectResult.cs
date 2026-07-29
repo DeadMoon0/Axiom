@@ -39,11 +39,11 @@ public class EffectAsyncResult<TState> : EffectResult<TState> where TState : str
 
 public class EffectMultiResult<TState> : EffectResult<TState> where TState : struct
 {
-    private readonly Func<EffectResult<TState>>[] _result;
+    private readonly EffectResult<TState>[] _result;
     private readonly Func<EffectResult<TState>> _onSuccess;
     private readonly Func<Exception, EffectResult<TState>> _onError;
 
-    internal EffectMultiResult(Func<EffectResult<TState>>[] results, Func<EffectResult<TState>> onSuccess, Func<Exception, EffectResult<TState>> onError)
+    internal EffectMultiResult(EffectResult<TState>[] results, Func<EffectResult<TState>> onSuccess, Func<Exception, EffectResult<TState>> onError)
     {
         _result = results;
         _onSuccess = onSuccess;
@@ -56,7 +56,7 @@ public class EffectMultiResult<TState> : EffectResult<TState> where TState : str
         {
             foreach (var item in _result)
             {
-                await item().DispatchAsync(store);
+                await item.DispatchAsync(store);
             }
         }
         catch (Exception e)

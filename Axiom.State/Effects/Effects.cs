@@ -40,7 +40,7 @@ public abstract partial class Effects<TState> where TState : struct
         return new EffectAwaitableResult<TState>(action, successfulAction, errorAction, isSuccessRequired);
     }
 
-    protected EffectResult<TState> Orchestrate(IEnumerable<Func<EffectResult<TState>>> dos, Func<EffectResult<TState>> onSuccess, Func<Exception, EffectResult<TState>> onError)
+    protected EffectResult<TState> Orchestrate(IEnumerable<EffectResult<TState>> dos, Func<EffectResult<TState>> onSuccess, Func<Exception, EffectResult<TState>> onError)
     {
         return new EffectMultiResult<TState>([.. dos], onSuccess, onError);
     }

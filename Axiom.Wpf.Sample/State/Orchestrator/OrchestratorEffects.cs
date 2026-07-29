@@ -9,9 +9,9 @@ public class OrchestratorEffects : Effects<MainState>
         On(OrchestratorActions.OrchestratorStartAction, (s) => Orchestrate
         (
             [
-                () => Await(Do(OrchestratorActions.Orchestrator1Action), OrchestratorActions.Orchestrator1SuccessAction, OrchestratorActions.Orchestrator1FailureAction),
-                () => Await(Do(OrchestratorActions.Orchestrator2Action), OrchestratorActions.Orchestrator2SuccessAction, OrchestratorActions.Orchestrator2FailureAction),
-                () => Await(Do(OrchestratorActions.Orchestrator3Action), OrchestratorActions.Orchestrator3SuccessAction, OrchestratorActions.Orchestrator3FailureAction),
+                Await(Do(OrchestratorActions.Orchestrator1Action), OrchestratorActions.Orchestrator1SuccessAction, OrchestratorActions.Orchestrator1FailureAction),
+                Await(Do(OrchestratorActions.Orchestrator2Action), OrchestratorActions.Orchestrator2SuccessAction, OrchestratorActions.Orchestrator2FailureAction),
+                Await(Do(OrchestratorActions.Orchestrator3Action), OrchestratorActions.Orchestrator3SuccessAction, OrchestratorActions.Orchestrator3FailureAction),
             ],
             () => Do(OrchestratorActions.OrchestratorFinalSuccessAction),
             (e) => DoNothing()
