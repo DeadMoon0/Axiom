@@ -13,12 +13,12 @@
 		<PackageTags>State,Management,Redux,Rx,Axiom</PackageTags>
 		<PackageIcon>Icon.png</PackageIcon>
 		<Description>A predictable, type-safe State Management System for C# built on the Observable Pattern. Manage application state with StateActions, Reducers, Effects, and Selectors for consistent and reactive state changes.</Description>
-		<Version>0.3.4</Version>
+		<Version>0.3.5</Version>
 		<PackageProjectUrl>https://github.com/DeadMoon0/Axiom</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/DeadMoon0/Axiom.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType> 
 		<Copyright>Copyright (c) DeadMoon0 2026</Copyright>
-		<PackageReleaseNotes>Rework the Effect System</PackageReleaseNotes>
+		<PackageReleaseNotes>Rework the Effect System, Bug fixes</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -42,9 +42,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="OneOf" Version="3.0.271" />
 		<PackageReference Include="System.Linq.Async" Version="7.0.1" />
-		<PackageReference Include="System.Reactive" Version="6.1.0" />
+		<PackageReference Include="System.Reactive" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
