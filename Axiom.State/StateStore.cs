@@ -22,7 +22,6 @@ namespace Axiom.State;
 public partial class StateStore<TState> where TState : struct
 {
     private record ChangeQueueItem(TState NewState, ParameterizedAction Action);
-    private record ChangeQueueError(Exception Exception, ParameterizedAction Action);
 
     private static StateStore<TState>? @default = null;
     public static StateStore<TState> Default { get => @default ?? throw new InvalidOperationException("You must first Build a Store and then add it as the Default."); }
@@ -32,17 +31,17 @@ public partial class StateStore<TState> where TState : struct
     private readonly ImmutableDictionary<StateActionGeneric, ReducerActionHander<TState>> _reducerHanders;
     private readonly ImmutableDictionary<StateActionGeneric, EffectActionHandler<TState>[]> _effectHanders;
     private readonly Dictionary<StateActionGeneric, List<TaskCompletionSource>> _actionCallbacks = [];
-    private readonly BlockingCollection<OneOf<ChangeQueueItem, ChangeQueueError>> _changeQueue = [];
+    private readonly BlockingCollection<ChangeQueueItem> _changeQueue = [];
     private readonly StateCloneContext _cloneContext;
     private readonly SynchronizationContext? _synchronizationContext;
     private readonly BehaviorSubject<TState> _subject = new(new());
     private readonly object _stateLock = new object();
 
     internal StateStore(
-        ImmutableDictionary<StateActionGeneric, ReducerActionHander<TState>> reducerHanders, 
-        ImmutableDictionary<StateActionGeneric, EffectActionHandler<TState>[]> effectHanders, 
-        SynchronizationContext? synchronizationContext, 
-        StateCloneStrategy[] customCloneStrategy, 
+        ImmutableDictionary<StateActionGeneric, ReducerActionHander<TState>> reducerHanders,
+        ImmutableDictionary<StateActionGeneric, EffectActionHandler<TState>[]> effectHanders,
+        SynchronizationContext? synchronizationContext,
+        StateCloneStrategy[] customCloneStrategy,
         bool makeDefault
     )
     {
@@ -75,6 +74,7 @@ public partial class StateStore<TState> where TState : struct
             }
             var paramAction = new ParameterizedAction { Action = action, Parameters = args };
             _changeQueue.Add(new ChangeQueueItem(newState, paramAction));
+            _subject.OnNext(newState);
         }
     }
 
@@ -132,25 +132,16 @@ public partial class StateStore<TState> where TState : struct
 
     private async Task ProcessChangeQueue()
     {
-        foreach (OneOf<ChangeQueueItem, ChangeQueueError> itemOrError in _changeQueue.GetConsumingEnumerable())
+        foreach (ChangeQueueItem item in _changeQueue.GetConsumingEnumerable())
         {
-            await itemOrError.Match(async (item) =>
+            foreach (var hander in _effectHanders.TryGetValue(item.Action.Action, out var handers) ? handers : [])
             {
-                _subject.OnNext(item.NewState);
-                foreach (var hander in _effectHanders.TryGetValue(item.Action.Action, out var handers) ? handers : [])
-                {
-                    _ = hander.Resolve(item.NewState, item.Action.Parameters, this);
-                }
-                foreach (var tcs in _actionCallbacks.TryGetValue(item.Action.Action, out var tcss) ? tcss : [])
-                {
-                    tcs.SetResult();
-                }
-            },
-            (error) =>
+                _ = hander.Resolve(item.NewState, item.Action.Parameters, this);
+            }
+            foreach (var tcs in _actionCallbacks.TryGetValue(item.Action.Action, out var tcss) ? tcss : [])
             {
-                _subject.OnError(error.Exception);
-                return Task.CompletedTask;
-            });
+                tcs.SetResult();
+            }
         }
     }
 }
