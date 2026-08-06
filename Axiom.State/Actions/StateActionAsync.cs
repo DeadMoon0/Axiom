@@ -41,8 +41,8 @@ public sealed record StateActionAsync<TResult, T1> : StateActionAsyncGeneric<TRe
     public static implicit operator StateAction<T1>(StateActionAsync<TResult, T1> a) => a.BeginAction;
 
     public override StateAction<T1> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1> SuccessAction { get; }
+    public override StateAction<Exception, T1> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -57,8 +57,8 @@ public sealed record StateActionAsyncNoResult<T1> : StateActionAsyncGeneric
     public static implicit operator StateAction<T1>(StateActionAsyncNoResult<T1> a) => a.BeginAction;
 
     public override StateAction<T1> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1> SuccessAction { get; }
+    public override StateAction<Exception, T1> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -74,8 +74,8 @@ public sealed record StateActionAsync<TResult, T1, T2> : StateActionAsyncGeneric
     public static implicit operator StateAction<T1, T2>(StateActionAsync<TResult, T1, T2> a) => a.BeginAction;
 
     public override StateAction<T1, T2> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -90,8 +90,8 @@ public sealed record StateActionAsyncNoResult<T1, T2> : StateActionAsyncGeneric
     public static implicit operator StateAction<T1, T2>(StateActionAsyncNoResult<T1, T2> a) => a.BeginAction;
 
     public override StateAction<T1, T2> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -107,8 +107,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3> : StateActionAsyncGen
     public static implicit operator StateAction<T1, T2, T3>(StateActionAsync<TResult, T1, T2, T3> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -123,8 +123,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3> : StateActionAsyncGene
     public static implicit operator StateAction<T1, T2, T3>(StateActionAsyncNoResult<T1, T2, T3> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -140,8 +140,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3, T4> : StateActionAsyn
     public static implicit operator StateAction<T1, T2, T3, T4>(StateActionAsync<TResult, T1, T2, T3, T4> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3, T4> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -156,8 +156,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3, T4> : StateActionAsync
     public static implicit operator StateAction<T1, T2, T3, T4>(StateActionAsyncNoResult<T1, T2, T3, T4> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3, T4> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -173,8 +173,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3, T4, T5> : StateAction
     public static implicit operator StateAction<T1, T2, T3, T4, T5>(StateActionAsync<TResult, T1, T2, T3, T4, T5> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3, T4, T5> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -189,8 +189,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3, T4, T5> : StateActionA
     public static implicit operator StateAction<T1, T2, T3, T4, T5>(StateActionAsyncNoResult<T1, T2, T3, T4, T5> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3, T4, T5> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -206,8 +206,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3, T4, T5, T6> : StateAc
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6>(StateActionAsync<TResult, T1, T2, T3, T4, T5, T6> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3, T4, T5, T6> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -222,8 +222,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6> : StateAct
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6>(StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3, T4, T5, T6> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -239,8 +239,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7> : Sta
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7>(StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3, T4, T5, T6, T7> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -255,8 +255,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7> : Stat
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7>(StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3, T4, T5, T6, T7> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -272,8 +272,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8> :
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8>(StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3, T4, T5, T6, T7, T8> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -288,8 +288,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8> : 
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8>(StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -305,8 +305,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9>(StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -321,8 +321,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9>(StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -338,8 +338,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -354,8 +354,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -371,8 +371,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -387,8 +387,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -404,8 +404,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -420,8 +420,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -437,8 +437,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -453,8 +453,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -470,8 +470,8 @@ public sealed record StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -486,41 +486,8 @@ public sealed record StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9
     public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> a) => a.BeginAction;
 
     public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
-
-    public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
-    { 
-        string baseName = "[" + area + "] " + TrimSimpleName(simpleName);
-        BeginAction = new(baseName + "Action", dontReduceBegin);
-        SuccessAction = new(baseName + "SuccessAction", dontReduceSuccess);
-        ErrorAction = new(baseName + "ErrorAction", dontReduceError);
-    }
-}
-
-public sealed record StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> : StateActionAsyncGeneric<TResult>
-{
-    public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(StateActionAsync<TResult, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> a) => a.BeginAction;
-
-    public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
-
-    public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
-    { 
-        string baseName = "[" + area + "] " + TrimSimpleName(simpleName);
-        BeginAction = new(baseName + "Action", dontReduceBegin);
-        SuccessAction = new(baseName + "SuccessAction", dontReduceSuccess);
-        ErrorAction = new(baseName + "ErrorAction", dontReduceError);
-    }
-}
-public sealed record StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> : StateActionAsyncGeneric
-{
-    public static implicit operator StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(StateActionAsyncNoResult<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> a) => a.BeginAction;
-
-    public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> SuccessAction { get; }
+    public override StateAction<Exception, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 

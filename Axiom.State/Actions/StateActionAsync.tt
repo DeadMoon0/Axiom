@@ -10,7 +10,7 @@ using System;
 namespace Axiom.State.Actions;
 
 <#
-const int MaxArity = 15;
+const int MaxArity = 15 - 1;
 
 for (int i = 0; i <= MaxArity; i++)
 {
@@ -20,8 +20,8 @@ public sealed record StateActionAsync<#= GenericTypes(i, true) #> : StateActionA
     public static implicit operator StateAction<#= GenericTypes(i, false) #>(StateActionAsync<#= GenericTypes(i, true) #> a) => a.BeginAction;
 
     public override StateAction<#= GenericTypes(i, false) #> BeginAction { get; }
-    public override StateAction<TResult> SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<#= GenericTypes(i, true) #> SuccessAction { get; }
+    public override StateAction<#= GenericTypesForExeption(i) #> ErrorAction { get; }
 
     public StateActionAsync(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -36,8 +36,8 @@ public sealed record StateActionAsyncNoResult<#= GenericTypes(i, false) #> : Sta
     public static implicit operator StateAction<#= GenericTypes(i, false) #>(StateActionAsyncNoResult<#= GenericTypes(i, false) #> a) => a.BeginAction;
 
     public override StateAction<#= GenericTypes(i, false) #> BeginAction { get; }
-    public override StateAction SuccessAction { get; }
-    public override StateAction<Exception> ErrorAction { get; }
+    public override StateAction<#= GenericTypes(i, false) #> SuccessAction { get; }
+    public override StateAction<#= GenericTypesForExeption(i) #> ErrorAction { get; }
 
     public StateActionAsyncNoResult(string area, string simpleName, bool dontReduceBegin = false, bool dontReduceSuccess = false, bool dontReduceError = false)
     { 
@@ -57,6 +57,13 @@ string GenericTypes(int count, bool printPrefixTs)
 {
     if(count == 0) return printPrefixTs ? "<TResult>" : "";
     return "<" + (printPrefixTs ? "TResult, " : "") + string.Join(", ",
+        Enumerable.Range(1, count).Select(i => $"T{i}")) + ">";
+}
+
+string GenericTypesForExeption(int count)
+{
+    if(count == 0) return "<Exception>";
+    return "<Exception, " + string.Join(", ",
         Enumerable.Range(1, count).Select(i => $"T{i}")) + ">";
 }
 

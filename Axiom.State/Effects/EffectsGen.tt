@@ -22,11 +22,17 @@ for (int i = 0; i <= MaxArity; i++)
 #>
     protected EffectResult<TState> Do<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action<#= Argumens(i) #>) => new EffectSingleResult<TState>(action<#= ArgumensArray(i) #>);
     protected void On<#= GenericTypes(i) #>(Actions.StateAction<#= GenericTypes(i) #> action, Func<TState<#= GenericTypesNoBracets(i) #>, EffectResult<TState>> effect) => _handers.Add(new ActionEffect<TState>((s, args) => effect(s<#= ArgumensFromArray(i) #>)).GetHandler(action));
-    protected void OnAsync<#= GenericTypesResult(i) #>(Actions.StateActionAsync<#= GenericTypesResult(i) #> stateAction, Func<TState <#= GenericTypesNoBracets(i) #>, Task<TResult>> action) => On(stateAction.BeginAction, (state<#= ArgumensNoType(i) #>) => DoAction(() => action(state<#= ArgumensNoType(i) #>), x => Do(stateAction.SuccessAction, x), e => Do(stateAction.ErrorAction, e)));
-    protected void OnAsync<#= GenericTypes(i) #>(Actions.StateActionAsyncNoResult<#= GenericTypes(i) #> stateAction, Func<TState <#= GenericTypesNoBracets(i) #>, Task> action) => On(stateAction.BeginAction, (state<#= ArgumensNoType(i) #>) => DoAction(() => action(state<#= ArgumensNoType(i) #>), () => Do(stateAction.SuccessAction), e => Do(stateAction.ErrorAction, e)));
+<#
+    if(i != 15) {
+#>
+    protected void OnAsync<#= GenericTypesResult(i) #>(Actions.StateActionAsync<#= GenericTypesResult(i) #> stateAction, Func<TState <#= GenericTypesNoBracets(i) #>, Task<TResult>> action) => On(stateAction.BeginAction, (state<#= ArgumensNoType(i) #>) => DoAction(() => action(state<#= ArgumensNoType(i) #>), (x) => Do(stateAction.SuccessAction, x<#= ArgumensNoType(i) #>), e => Do(stateAction.ErrorAction, e<#= ArgumensNoType(i) #>)));
+    protected void OnAsync<#= GenericTypes(i) #>(Actions.StateActionAsyncNoResult<#= GenericTypes(i) #> stateAction, Func<TState <#= GenericTypesNoBracets(i) #>, Task> action) => On(stateAction.BeginAction, (state<#= ArgumensNoType(i) #>) => DoAction(() => action(state<#= ArgumensNoType(i) #>), () => Do(stateAction.SuccessAction<#= ArgumensNoType(i) #>), e => Do(stateAction.ErrorAction, e<#= ArgumensNoType(i) #>)));
     protected EffectResult<TState> Await<#= GenericTypesResult(i) #>(Actions.StateActionAsync<#= GenericTypesResult(i) #> stateAction<#= Argumens(i) #>, bool isSuccessRequired = true) => new EffectAwaitableResult<TState>(Do(stateAction.BeginAction<#= ArgumensNoType(i) #>), stateAction.SuccessAction, stateAction.ErrorAction, isSuccessRequired);
     protected EffectResult<TState> Await<#= GenericTypes(i) #>(Actions.StateActionAsyncNoResult<#= GenericTypes(i) #> stateAction<#= Argumens(i) #>, bool isSuccessRequired = true) => new EffectAwaitableResult<TState>(Do(stateAction.BeginAction<#= ArgumensNoType(i) #>), stateAction.SuccessAction, stateAction.ErrorAction, isSuccessRequired);
 
+<#
+    }
+#>
 <#
 }
 #>
@@ -40,11 +46,11 @@ string GenericTypes(int count)
         Enumerable.Range(1, count).Select(i => $"T{i}")) + ">";
 }
 
-string GenericTypesNoBracets(int count)
+string GenericTypesNoBracets(int count, bool prefix = true, bool sufix = false)
 {
     if(count == 0) return "";
-    return ", " + string.Join(", ",
-        Enumerable.Range(1, count).Select(i => $"T{i}"));
+    return (prefix ? ", " : "") + string.Join(", ",
+        Enumerable.Range(1, count).Select(i => $"T{i}")) + (sufix ? ", " : "");
 }
 
 string GenericTypesResult(int count)
@@ -68,10 +74,10 @@ string ArgumensFromArray(int count)
         Enumerable.Range(1, count).Select(i => $"(T{i})args[{i - 1}]!"));
 }
 
-string ArgumensNoType(int count)
+string ArgumensNoType(int count, bool prefix = true)
 {
     if (count == 0) return "";
-    return ", " + string.Join(", ",
+    return (prefix ? ", " : "") + string.Join(", ",
         Enumerable.Range(1, count).Select(i => $"arg{i}"));
 }
 

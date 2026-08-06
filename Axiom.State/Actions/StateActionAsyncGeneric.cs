@@ -5,8 +5,8 @@ namespace Axiom.State.Actions;
 public abstract record StateActionAsyncGeneric<TResult>
 {
     public abstract StateActionGeneric BeginAction { get; }
-    public abstract StateAction<TResult> SuccessAction { get; }
-    public abstract StateAction<Exception> ErrorAction { get; }
+    public abstract StateActionGeneric SuccessAction { get; }
+    public abstract StateActionGeneric ErrorAction { get; }
 
     protected static string TrimSimpleName(string name)
     {
@@ -24,8 +24,8 @@ public abstract record StateActionAsyncGeneric<TResult>
 public abstract record StateActionAsyncGeneric
 {
     public abstract StateActionGeneric BeginAction { get; }
-    public abstract StateAction SuccessAction { get; }
-    public abstract StateAction<Exception> ErrorAction { get; }
+    public abstract StateActionGeneric SuccessAction { get; }
+    public abstract StateActionGeneric ErrorAction { get; }
 
     protected static string TrimSimpleName(string name)
     {
